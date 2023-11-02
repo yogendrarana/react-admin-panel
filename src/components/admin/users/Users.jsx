@@ -4,6 +4,7 @@ import { db } from "../../../firebase";
 import { AuthContext } from "../../../context/AuthContextProvider";
 
 // import components
+import TableOuter from "../TableOuter";
 import UserRow from "./UserRow";
 import NewUserForm from "./NewUserForm";
 import { toast } from "react-hot-toast";
@@ -25,10 +26,11 @@ const Users = () => {
             .map((doc) => {
                 const uid = doc.id;
                 const userData = doc.data();
-                return {uid, ...userData};
+
+                return { uid, ...userData };
             })
             .filter((user) => user.role === "admin" || user.role === "staff")
-            .filter((user) => user.email.toLowerCase().includes(keyword.toLowerCase()));
+            .filter((user) => user.name.toLowerCase().includes(keyword.toLowerCase()));
         setUsers(usersData);
     };
 
@@ -48,13 +50,13 @@ const Users = () => {
 
     return (
         <>
-            <div className="w-[100%] flex pb-[1.5rem]">
+            <div className="w-[100%] flex mb-[1rem]">
                 <div className="mr-auto relative flex items-center text-[1.25rem] rounded-[0.5rem]">
                     <input
                         placeholder="Quick search"
                         value={keyword}
                         onChange={(e) => setKeyword(e.target.value)}
-                        className="h-[4rem] border border-gray-300 p-[0.75rem] rounded-[0.5rem] text-[1.5rem] pr-[5rem]"
+                        className="h-[4rem] border border-gray-300 p-[0.75rem] text-[1.5rem] pr-[5rem]"
                     />
 
                     {!keyword && (
@@ -67,35 +69,23 @@ const Users = () => {
                             className="fa-solid fa-xmark absolute cursor-pointer text-[#7d817e] text-[1.5rem] bottom-[0.5rem] right-[1rem] transform translate-y-[-50%]"
                         ></i>
                     )}
-
                 </div>
 
                 <button
                     onClick={handleOpenNewUserDrawer}
-                    className="text-white bg-blue-500 hover:bg-blue-600 mr-[1rem] custom-shadow flex items-center text-[1.25rem] duration-150 text-[#b2eb5] px-[2rem] py-[1rem] rounded-[0.5rem]"
+                    className="text-white bg-blue-500 hover:bg-blue-600 custom-shadow flex items-center text-[1.25rem] duration-150 text-[#b2eb5] px-[2rem] py-[1rem] rounded-[0.5rem]"
                 >
                     <i className="fa-solid fa-plus text-white"></i>
                     <p className="ml-[1rem]">Add User</p>
                 </button>
             </div>
 
-            <div className="w-full flex flex-col border rounded-[0.5rem] overflow-hidden">
-                <table className="w-[100%] border-spacing-0">
-                    <thead>
-                        <tr className="bg-[#ededed]">
-                            <th className="p-[1.5rem] text-justify text-[1.45rem]">Name</th>
-                            <th className="p-[1.5rem] text-justify text-[1.45rem]">Email</th>
-                            <th className="p-[1.5rem] text-justify text-[1.45rem]">Mobile</th>
-                            <th className="p-[1.5rem] text-justify text-[1.45rem]">Role</th>
-                            <th className="p-[1.5rem] text-justify text-[1.45rem]">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users[0] && users.map((user, index) => (
-                            <UserRow user={user} key={index} getUsers={getUsers} />
-                        ))}
-                    </tbody>
-                </table>
+            <div className="w-full flex flex-col">
+                <TableOuter thead_data={['S.N.', 'Name', 'Email', 'Mobile', 'Role', 'Status', 'Action']} >
+                    {users[0] && users.map((user, index) => (
+                        <UserRow user={user} key={index} index={index} getUsers={getUsers} />
+                    ))}
+                </TableOuter>
 
                 <NewUserForm openNewUserForm={openNewUserForm} setOpenNewUserForm={setOpenNewUserForm} getUsers={getUsers} />
             </div>

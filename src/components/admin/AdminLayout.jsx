@@ -27,8 +27,8 @@ const AdminLayout = () => {
                         <i onClick={() => setExtend(!extend)} className={`${extend ? "fa-solid fa-arrow-left-long" : "fa-solid fa-bars"} text-[2rem] cursor-pointer sm:hidden`} ></i>
                     </div>
 
-                    <div>
-                        <p className="text-[1.25rem]">You are logged in as <span className="text-blue-700">{currentUser?.email}</span></p>
+                    <div className="flex items-center">
+                        <p className="text-[1.25rem]">You are logged in as <span className="text-blue-700 text-[1.25rem]">{currentUser?.email}</span></p>
                     </div>
                 </div>
 

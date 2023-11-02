@@ -17,6 +17,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import Products from './components/admin/products/Products';
 import AllOrders from './components/admin/orders/AllOrders';
 import ForgotPassword from './components/pages/ForgotPassword';
+import Home from './components/pages/Home'
 
 // app
 function App() {
@@ -24,11 +25,12 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <>
-                <Route path='/' element={<Login />} />
+                <Route path='/' element={<Home />} />
+                <Route path='login' element={<Login />} />
                 <Route path='register' element={<Register />} />
                 <Route path='forgot-password' element={<ForgotPassword />} />
     
-                <Route path='admin' element={<Protected isLoggedIn={false}><AdminLayout /></Protected>}>
+                <Route path='admin' element={<Protected><AdminLayout /></Protected>}>
                     <Route index element={<AllOrders />} />
                     <Route path='orders' element={<AllOrders />} />
                     <Route path='products' element={<Products />} />

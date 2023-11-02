@@ -5,9 +5,12 @@ import { toast } from 'react-hot-toast';
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContextProvider';
 
+// import component
+import Spinner from '../util/spinner/Spinner';
+
 const Home = () => {
     const navigate = useNavigate();
-    const { isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin } = useContext(AuthContext);
+    const { isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, refreshLoading } = useContext(AuthContext);
 
     const handleLogout = () => {
         signOut(auth).then(() => {
@@ -17,6 +20,15 @@ const Home = () => {
         }).catch((error) => {
             toast.error(error.message);
         })
+    }
+
+    if(refreshLoading){
+        return <Spinner />
+    }
+
+
+    if(isLoggedIn){
+        return navigate('/admin/orders');
     }
 
     return (
@@ -33,7 +45,7 @@ const Home = () => {
 
             <nav className='h-[--nav-height] flex items-center px-[2rem]'>
                 <div className='flex gap-[1rem] items-center'>
-                    {(isAdmin && isLoggedIn) && <button onClick={() => navigate('/admin')} className="h-[4rem] w-[12rem] shadow-sm text-[1.5rem] border rounded-full grid place-items-center">Admin Panel</button>}
+                    {(isAdmin && isLoggedIn) && <button onClick={() => navigate('/admin/orders')} className="h-[4rem] w-[12rem] shadow-sm text-[1.5rem] border rounded-full grid place-items-center">Admin Panel</button>}
                     {!isLoggedIn && <button onClick={() => navigate('/login')} className="h-[4rem] w-[12rem] text-[1.5rem] bg-blue-500 text-white custom-shadow rounded-full">Login</button>}
                     {isLoggedIn && <button onClick={handleLogout} className="h-[4rem] w-[12rem] text-[1.5rem] bg-blue-500 text-white custom-shadow rounded-full">Logout</button>}
                 </div>
